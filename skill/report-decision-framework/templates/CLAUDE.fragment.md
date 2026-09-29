@@ -1,6 +1,7 @@
 ## Report-Decision Framework
 
-Scaffolded against framework version: 0.1.0 (see report-decision-framework repo for the spec).
+Scaffolded against framework version: {{FRAMEWORK_VERSION}} (see the
+report-decision-framework repo's SPEC.md for the full specification).
 
 Read `docs/REPORT.md` before any implementation work. It is the conceptual
 source of truth. Reference its block IDs (`{#C1}`, `{#I1}`, `{#E1}`), do not
@@ -18,22 +19,29 @@ Concept: <ID, ...>
 When a design decision is made (a change justified by data, a benchmark, or
 a project requirement rather than a plain bug fix), append an entry to
 `docs/DECISIONS.md` before writing the code, using the format in that file.
-ID format: `D-<YYYYMMDD>-<author-initials>-<n>`. Tag the implementing
-commit(s) with:
+ID format: `D-<YYYYMMDD>-<author-initials>-<n>`, where `<n>` is one more than
+the highest `<n>` that author already has for that date. Tag the
+implementing commit(s) with:
 ```
 Decision: <ID>
 ```
-and append the commit's short hash and author to that decision's `Commits`
-field after committing.
+Trailers go in the last paragraph of the commit message, one per line,
+with no blank line between them.
+
+Never amend a commit to record its own hash. Refresh the `Commits` cache
+with `python scripts/reconcile.py --fix` and commit the result separately
+(e.g. `docs(decisions): refresh commit cache`) without a `Decision:`
+trailer. Set the entry's `Status` to `Implemented` in that same commit once
+the decision is fully implemented.
 
 If a decision changes a claim already made in `docs/REPORT.md`, patch that
 block in the same or a following commit, referencing the decision ID in the
-commit message.
+commit message (`Decision:` trailer).
 
-`docs/DECISIONS.md` is append-only. Never edit or delete a past entry;
-corrections are new entries with `Status: Supersedes D-...` /
-`Superseded by D-...`.
+`docs/DECISIONS.md` is append-only. Never delete or reorder entries, and
+never edit their content fields; only `Status` and `Commits` may change.
+Corrections are new entries with a `**Supersedes:** D-...` field, and the
+superseded entry's `Status` becomes `Superseded by D-...`.
 
-Periodically run `python scripts/reconcile.py --check` to catch drift
-between `docs/DECISIONS.md` and actual git history (e.g. commits made
-outside this workflow).
+Run `python scripts/reconcile.py --check` before considering a decision
+closed and before pushing (a `pre-push` hook may already do it).

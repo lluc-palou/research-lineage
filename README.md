@@ -12,8 +12,16 @@ cd report-decision-framework
 ./scripts/install.sh
 ```
 
-This symlinks `skill/report-decision-framework/` into `~/.claude/skills/`, so it's available in every project Claude Code works on. Editing this repo edits the skill immediately, no rebuild step.
+On Windows without Developer Mode, run `scripts\install.ps1` from PowerShell instead (it uses a directory junction, no admin rights needed).
 
-In any project, invoke it (e.g. "set up the decision framework here") to scaffold `docs/REPORT.md`, `docs/DECISIONS.md`, the `CLAUDE.md` rules, and `scripts/reconcile.py`.
+Either script links `skill/report-decision-framework/` into `~/.claude/skills/`, so the skill is available in every project Claude Code works on. Editing this repo edits the skill immediately, no rebuild step.
+
+In any project, invoke it (e.g. "set up the decision framework here") to scaffold `docs/REPORT.md`, `docs/DECISIONS.md`, the `CLAUDE.md` rules, `scripts/reconcile.py`, and optionally a `pre-push` hook.
 
 See `examples/worked-example/` for a filled pair of `REPORT.md` / `DECISIONS.md`.
+
+## Development
+
+```bash
+python -m pytest tests
+```

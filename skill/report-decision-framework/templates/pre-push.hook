@@ -1,0 +1,15 @@
+#!/bin/sh
+# Report-Decision Framework pre-push hook. Installed as .git/hooks/pre-push
+# by the skill (only with the user's consent, never over an existing hook).
+# Blocks a push while docs/DECISIONS.md, docs/REPORT.md and the commit
+# trailers disagree; bypass once with `git push --no-verify`.
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+for PYTHON in python3 python py; do
+  if "$PYTHON" -c "import sys" >/dev/null 2>&1; then
+    exec "$PYTHON" scripts/reconcile.py --check
+  fi
+done
+
+echo "pre-push: no Python interpreter found, skipping reconcile.py --check" >&2
+exit 0
