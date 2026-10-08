@@ -1,5 +1,5 @@
 #!/bin/sh
-# Report-Decision Framework pre-push hook. Installed as .git/hooks/pre-push
+# Research Lineage pre-push hook. Installed as .git/hooks/pre-push
 # by the skill (only with the user's consent, never over an existing hook).
 # Blocks a push while docs/DECISIONS.md, docs/REPORT.md and the commit
 # trailers disagree; bypass once with `git push --no-verify`.

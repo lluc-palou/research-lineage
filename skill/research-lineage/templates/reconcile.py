@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Report-Decision Framework Reconciliation
+Research Lineage Reconciliation
 
 Reconciles the `**Commits:**` field of every entry in docs/DECISIONS.md against the `Decision:`
 trailers found across the full git history (`git log --all`), which are the canonical record, and

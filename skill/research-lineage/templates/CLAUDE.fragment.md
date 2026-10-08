@@ -1,7 +1,7 @@
-## Report-Decision Framework
+## Research Lineage
 
 Scaffolded against framework version: {{FRAMEWORK_VERSION}} (see the
-report-decision-framework repo's SPEC.md for the full specification).
+research-lineage repo's SPEC.md for the full specification).
 
 Read `docs/REPORT.md` before any implementation work. It is the conceptual
 source of truth. Reference its block IDs (`{#C1}`, `{#I1}`, `{#E1}`), do not

@@ -2,6 +2,11 @@
 
 All notable changes to the framework itself (not to any project using it) are recorded here. Projects record the version they were scaffolded against in their `CLAUDE.md`; moving a project to a newer version is a deliberate migration (SPEC.md section 8).
 
+## 0.3.0 - 2026-10-08
+- Renamed from `report-decision-framework` to `research-lineage` (repository, skill directory and `name`, install targets, documentation). The new name reflects the full lineage traced, from report concepts through decisions, justifications and impact to implementation and git history.
+- `CLAUDE.fragment.md` heading is now `## Research Lineage`; the skill still recognizes the legacy `## Report-Decision Framework` heading, so projects scaffolded against earlier versions are not appended to twice.
+- Re-run the install script after updating: the skill is now linked as `~/.claude/skills/research-lineage`, and the old `report-decision-framework` link should be removed.
+
 ## 0.2.0 - 2026-09-29
 Schema:
 - `DECISIONS.md`: optional `**Supersedes:**` field; content fields are immutable, only `Status` and `Commits` are mutable; empty cache is written `(none yet)`.

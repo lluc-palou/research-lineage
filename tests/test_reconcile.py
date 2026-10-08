@@ -1,7 +1,7 @@
 """
 Reconciliation Script Tests
 
-End-to-end tests for skill/report-decision-framework/templates/reconcile.py. Each test builds a throwaway
+End-to-end tests for skill/research-lineage/templates/reconcile.py. Each test builds a throwaway
 git repository with a docs/REPORT.md, a docs/DECISIONS.md and commits carrying `Decision:` / `Concept:`
 trailers, runs the script as a subprocess from that repository, and asserts on its exit code, output and
 rewritten DECISIONS.md.
@@ -15,7 +15,7 @@ from typing import List
 
 import pytest
 
-RECONCILE_SCRIPT = Path(__file__).resolve().parents[1] / "skill" / "report-decision-framework" / "templates" / "reconcile.py"
+RECONCILE_SCRIPT = Path(__file__).resolve().parents[1] / "skill" / "research-lineage" / "templates" / "reconcile.py"
 
 REPORT_TEXT = """# Project
 

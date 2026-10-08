@@ -1,13 +1,13 @@
-# Windows counterpart of install.sh. Links skill\report-decision-framework
+# Windows counterpart of install.sh. Links skill\research-lineage
 # into %USERPROFILE%\.claude\skills\ with a directory junction, which needs
 # neither administrator rights nor Developer Mode and, like a symlink, makes
 # the repo the single source of truth (no copy, no drift).
 $ErrorActionPreference = "Stop"
 
 $RepoRoot = Split-Path -Parent $PSScriptRoot
-$SkillSrc = Join-Path $RepoRoot "skill\report-decision-framework"
+$SkillSrc = Join-Path $RepoRoot "skill\research-lineage"
 $SkillsDir = Join-Path $env:USERPROFILE ".claude\skills"
-$SkillDest = Join-Path $SkillsDir "report-decision-framework"
+$SkillDest = Join-Path $SkillsDir "research-lineage"
 
 New-Item -ItemType Directory -Force -Path $SkillsDir | Out-Null
 

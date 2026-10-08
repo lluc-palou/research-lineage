@@ -1,10 +1,10 @@
 ---
-name: report-decision-framework
-description: Scaffold and maintain the report-decision traceability framework, linking a project's conceptual REPORT.md, its DECISIONS.md design-decision log, and its git commits. Trigger when starting a new data science, ML, or research project, when asked to set up decision tracking or traceability, when asked to link a project's report to its repository history, or when working in a repo whose CLAUDE.md contains a "Report-Decision Framework" section.
-version: 0.2.0
+name: research-lineage
+description: Scaffold and maintain the research-lineage framework, tracing a project's lineage from the concepts in its REPORT.md, through the design decisions, justifications and impact logged in DECISIONS.md, to the implementation and its git commits. Trigger when starting a new data science, ML, or research project, when asked to set up decision tracking or traceability, when asked to link a project's report to its repository history, or when working in a repo whose CLAUDE.md contains a "Research Lineage" section (or the legacy "Report-Decision Framework" section).
+version: 0.3.0
 ---
 
-# Report-Decision Framework Skill
+# Research Lineage Skill
 
 Full specification: `SPEC.md` at the root of the framework repository. This skill directory is symlinked from that repository, so the file is at `../../SPEC.md` relative to this file's resolved location. SPEC.md is authoritative; if this file and SPEC.md disagree, follow SPEC.md and point out the discrepancy.
 
@@ -18,11 +18,11 @@ The target must be a git repository (offer `git init` if it is not). Create, onl
 
 1. `docs/REPORT.md` from `templates/REPORT.skeleton.md`, if no report exists yet. When filling it, follow the `reporting` skill's writing rules if that skill is available, and add a `{#ID}` anchor to every Concept (`C<n>`), Implementation (`I<n>`) and Experiment (`E<n>`) heading, numbered sequentially per section. If a report exists without anchors, ask before adding them (anchoring an existing report changes its structure).
 2. `docs/DECISIONS.md` from `templates/DECISIONS.skeleton.md`.
-3. `CLAUDE.md`: take `templates/CLAUDE.fragment.md`, replace `{{FRAMEWORK_VERSION}}` with the `version` in this file's frontmatter, then create `CLAUDE.md` with it if absent, or append it verbatim (it already carries its `## Report-Decision Framework` heading) if `CLAUDE.md` exists. If that heading is already present, leave `CLAUDE.md` untouched and report the recorded version instead.
+3. `CLAUDE.md`: take `templates/CLAUDE.fragment.md`, replace `{{FRAMEWORK_VERSION}}` with the `version` in this file's frontmatter, then create `CLAUDE.md` with it if absent, or append it verbatim (it already carries its `## Research Lineage` heading) if `CLAUDE.md` exists. If that heading, or the legacy `## Report-Decision Framework` heading from versions before 0.3.0, is already present, leave `CLAUDE.md` untouched and report the recorded version instead.
 4. `scripts/reconcile.py`, copied from `templates/reconcile.py`.
 5. Optionally, with the user's consent, `.git/hooks/pre-push` from `templates/pre-push.hook` (made executable). Never replace an existing hook; show the one-line call to add to it instead.
 
-Finish with `python scripts/reconcile.py --check` (expected: "No drift found.") and suggest committing the scaffold as `chore: scaffold report-decision framework v<version>`.
+Finish with `python scripts/reconcile.py --check` (expected: "No drift found.") and suggest committing the scaffold as `chore: scaffold research-lineage framework v<version>`.
 
 ## Ongoing behavior (every session in a scaffolded project)
 

@@ -1,6 +1,6 @@
-# Report-Decision Framework — Specification
+# Research Lineage — Specification
 
-Version 0.2.0. This document is the canonical definition of the framework; everything else (the skill, its templates, the install scripts, and the per-project scaffolds) is derived from it, not the other way around. Where any other file disagrees with this one, this one is correct and the other file is a bug.
+Version 0.3.0. This document is the canonical definition of the framework; everything else (the skill, its templates, the install scripts, and the per-project scaffolds) is derived from it, not the other way around. Where any other file disagrees with this one, this one is correct and the other file is a bug.
 
 ## 1. Purpose
 
@@ -11,14 +11,14 @@ During a data science project three records of the same system tend to drift apa
 The framework lives in its own GitHub repository, which is the single source of truth for the skill that Claude Code loads:
 
 ```
-report-decision-framework/
+research-lineage/
 ├── SPEC.md                             # this file
 ├── README.md                           # quick start, links to SPEC.md
 ├── CHANGELOG.md                        # framework's own version history
 ├── .gitignore
 ├── .gitattributes                      # LF endings for scripts, hooks, templates
 ├── skill/
-│   └── report-decision-framework/      # the directory linked into ~/.claude/skills/
+│   └── research-lineage/      # the directory linked into ~/.claude/skills/
 │       ├── SKILL.md                    # trigger, scaffolding and ongoing rules, `version:`
 │       └── templates/
 │           ├── REPORT.skeleton.md      # anchored report template
@@ -42,7 +42,7 @@ report-decision-framework/
 The skill is never a separately maintained copy. `scripts/install.sh` symlinks it into the personal skills directory:
 
 ```bash
-ln -s "$(pwd)/skill/report-decision-framework" ~/.claude/skills/report-decision-framework
+ln -s "$(pwd)/skill/research-lineage" ~/.claude/skills/research-lineage
 ```
 
 Since it is a link rather than a copy, editing the repository edits what Claude Code loads, with no sync step and no drift between "the standard" and "what is installed", and a `git pull` updates the skill on every machine it is linked from. Two safety rules apply to both install scripts: an existing link at the destination is replaced, whereas an existing real directory is never deleted (it may be a hand-edited copy) and the script aborts instead; and the scripts never fall back to copying, which Git Bash on Windows does silently for `ln -s` unless native symlinks are forced (`MSYS=winsymlinks:nativestrict`). On Windows without Developer Mode, `scripts/install.ps1` creates a directory junction, which behaves like a symlink for this purpose and needs no administrator rights.
@@ -91,7 +91,7 @@ Trailers are placed in the last paragraph of the message, one per line, with no 
 
 ### 4.4 `CLAUDE.md` fragment
 
-`templates/CLAUDE.fragment.md` begins with a `## Report-Decision Framework` heading and records the framework version the project was scaffolded against (substituted from `SKILL.md`'s `version:` into a `{{FRAMEWORK_VERSION}}` placeholder). It instructs Claude Code to read `docs/REPORT.md` and `docs/DECISIONS.md` before implementation work, to reference block IDs instead of restating content, to log a decision before writing the code for it, to tag commits with both trailers, to refresh the `Commits` cache in a separate commit (section 6), and to respect the field mutability rules of section 4.2.
+`templates/CLAUDE.fragment.md` begins with a `## Research Lineage` heading and records the framework version the project was scaffolded against (substituted from `SKILL.md`'s `version:` into a `{{FRAMEWORK_VERSION}}` placeholder). It instructs Claude Code to read `docs/REPORT.md` and `docs/DECISIONS.md` before implementation work, to reference block IDs instead of restating content, to log a decision before writing the code for it, to tag commits with both trailers, to refresh the `Commits` cache in a separate commit (section 6), and to respect the field mutability rules of section 4.2.
 
 ### 4.5 `scripts/reconcile.py`
 
@@ -143,7 +143,7 @@ Invoking the skill in a target repository (a git repository; the skill offers `g
 
 - `docs/REPORT.md` from `REPORT.skeleton.md`, if no report exists yet; an existing report without anchors is anchored only after asking.
 - `docs/DECISIONS.md` from `DECISIONS.skeleton.md`.
-- `CLAUDE.md`, created from the fragment, or with the fragment appended if the file exists; left untouched if it already contains the `## Report-Decision Framework` heading.
+- `CLAUDE.md`, created from the fragment, or with the fragment appended if the file exists; left untouched if it already contains the `## Research Lineage` heading or the legacy `## Report-Decision Framework` heading (versions before 0.3.0).
 - `scripts/reconcile.py`, copied.
 - `.git/hooks/pre-push`, optionally and only with consent.
 
@@ -160,7 +160,7 @@ The resulting project layout is therefore:
 └── ...                       # the project's own code
 ```
 
-The scaffold ends with `reconcile.py --check` (expected to report no drift) and is committed as `chore: scaffold report-decision framework v<version>`.
+The scaffold ends with `reconcile.py --check` (expected to report no drift) and is committed as `chore: scaffold research-lineage framework v<version>`.
 
 ## 8. Framework versioning
 
@@ -170,10 +170,10 @@ Once the framework is used across several projects, it must be able to change wi
 
 The repository is built, or rebuilt from scratch, in the following order, each step depending only on the previous ones:
 
-1. Create the GitHub repository `report-decision-framework` (no template, no licence file needed for private use) and clone it.
+1. Create the GitHub repository `research-lineage` (no template, no licence file needed for private use) and clone it.
 2. Add `.gitignore` (`__pycache__/`, `*.pyc`, `.pytest_cache/`) and `.gitattributes` (LF for `*.sh`, `*.hook`, `*.py`, `*.md`; CRLF for `*.ps1`), before any script is committed, so Windows checkouts never produce CRLF shell scripts.
-3. Write this `SPEC.md`, then derive from it `skill/report-decision-framework/SKILL.md` (frontmatter `name`, `description`, `version`) and the five files under `templates/` described in section 4.
-4. Write `scripts/install.sh` and `scripts/install.ps1` following section 3, and mark the shell files executable (`git update-index --chmod=+x scripts/install.sh skill/report-decision-framework/templates/reconcile.py skill/report-decision-framework/templates/pre-push.hook`).
+3. Write this `SPEC.md`, then derive from it `skill/research-lineage/SKILL.md` (frontmatter `name`, `description`, `version`) and the five files under `templates/` described in section 4.
+4. Write `scripts/install.sh` and `scripts/install.ps1` following section 3, and mark the shell files executable (`git update-index --chmod=+x scripts/install.sh skill/research-lineage/templates/reconcile.py skill/research-lineage/templates/pre-push.hook`).
 5. Write `tests/test_reconcile.py`, covering at least every row of the table in section 4.5, idempotency of `--fix`, empty `Commits` fields, multiple trailers per commit, CRLF preservation, and execution from a subdirectory; run `python -m pytest tests`.
 6. Fill `examples/worked-example/` with a small, consistent `REPORT.md` / `DECISIONS.md` pair in which every ID cited in `DECISIONS.md` exists as an anchor in `REPORT.md`.
 7. Write `README.md` (quick start, link to this file) and the `CHANGELOG.md` entry, check that the version string matches in `SPEC.md`, `SKILL.md`, and `CHANGELOG.md`, then commit, tag `v<version>`, and push with `--tags`.
